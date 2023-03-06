@@ -1,4 +1,6 @@
 body {
+  background: url("./assets/images/background.png") no-repeat center center fixed;
+  background-size: 45%;
   background-color: black;
   color: white;
   margin: 0;
