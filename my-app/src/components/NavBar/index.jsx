@@ -1,8 +1,8 @@
 import { Button, Toolbar } from '@material-ui/core';
 import HomeIcon from "@material-ui/icons/Home";
-import UitlegIcon from "@material-ui/icons/Home";
-import DashboardIcon from "@material-ui/icons/Home";
-import AddDataIcon from "@material-ui/icons/Home";
+import UitlegIcon from "@material-ui/icons/Help";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import AddDataIcon from "@material-ui/icons/PostAdd";
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import "./index.css";

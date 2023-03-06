@@ -1,0 +1,16 @@
+.Dashboard .grid-container {
+    max-width: 1500px;
+    max-height: 1080px;
+}
+
+.Dashboard .grid-navbar {
+    min-width: auto;
+    max-width: 20%;
+    min-height: 100%;
+    margin-top: 5%;
+}
+.Dashboard .grid-content {
+    min-width: 80%;
+    max-width: 80%;
+    min-height: 100%;
+}
