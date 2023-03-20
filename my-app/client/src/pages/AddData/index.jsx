@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import NavBar from "../../components/NavBar";
 import { Grid } from "@material-ui/core";
+import Axios from 'axios';
 
 import { createToastMessage } from "../../utils/toast";
 
-
-var state = {
+var formData = {
     colorWon: "white",
 }
 
@@ -19,7 +19,7 @@ function handleChange(event) {
     const name = target.name;
     let value = target.value;
 
-    setState({...state, [name] : value});
+    setFormData({ ...formData, [name]: value });
 }
 
 /**
@@ -29,17 +29,38 @@ function handleChange(event) {
 async function handleSubmit(event) {
     createToastMessage("The form is being submitted, please wait...", 3000);
 
-    //TODO: Send the form data to the database
-    alert('State data: ' + state.toString());
+    Axios.post("http://localhost:3001/api/insert", { formData: formData }).then((res) => {
+        console.log("We did it!: " + res);
+        alert("Succesfull insert!");
+    });
 
     event.preventDefault();
 }
 
-function setState(newState){
-    state = newState;
+function setFormData(newFormData) {
+    formData = newFormData;
+}
+
+function deleteRow(id) {
+    Axios.delete(`http://localhost:3001/api/delete/${id}`);
+}
+
+function updateRow(id, formData) {
+    Axios.put("http://localhost:3001/api/update", {
+        formData: formData,
+        id: id,
+    });
 }
 
 function AddData() {
+    useEffect(() => {
+        Axios.get("http://localhost:3001/api/get").then((response) => {
+            console.log(response);
+        });
+    }, []);
+
+    const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
+
     return (
         <React.Fragment>
             <div className="AddData">
@@ -61,18 +82,21 @@ function AddData() {
                                 <select
                                     type="select"
                                     name="colorWon"
-                                    value={state.colorWon}
+                                    value={formData.colorWon}
                                     onChange={(event) => {
                                         handleChange(event);
                                     }}
                                 >
                                     <option value="white">WHITE</option>
                                     <option value="black">BLACK</option>
+                                    <option value="tie">TIE</option>
                                 </select>
 
                                 <input className="submit-button" type="submit" value="Submit Form" />
                             </form>
                         </div>
+                        <input className="update-button" type="text" pattern="[0-9]*" onChange={(event) => { setDeleteRowIndex(event.target.value) }} />
+                        <button onClick={() => { deleteRow(deleteRowIndex) }}>Delete</button>
                     </Grid>
                 </Grid>
             </div>
