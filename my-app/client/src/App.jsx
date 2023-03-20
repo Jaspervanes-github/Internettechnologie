@@ -9,8 +9,8 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Uitleg from "./pages/Uitleg";
 import Dashboard from "./pages/Dashboard";
-import Add_Data from "./pages/Add_Data";
-import No_Page from "./pages/No_Page";
+import AddData from "./pages/AddData";
+import NoPage from "./pages/NoPage";
 
 const theme = createTheme({
   palette: {
@@ -55,9 +55,9 @@ function App() {
           <Routes>
             <Route exact path="/uitleg" element={<Uitleg />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route exact path="/add_data" element={<Add_Data />} />
+            <Route exact path="/add_data" element={<AddData />} />
             <Route exact path="/" element={<Home />} />
-            <Route path="*" element={<No_Page />} />
+            <Route path="*" element={<NoPage />} />
           </Routes>
         </BrowserRouter>
       </div>

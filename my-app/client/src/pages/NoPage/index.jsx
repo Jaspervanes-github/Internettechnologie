@@ -3,16 +3,17 @@ import "./index.css";
 import NavBar from "../../components/NavBar";
 import { Grid } from "@material-ui/core";
 
-function Add_Data() {
+function NoPage() {
     return (
         <React.Fragment>
-            <div className="Add_Data">
+            <div className="NoPage">
                 <Grid container className="grid-container" spacing={1}>
                     <Grid item className="grid-navbar" xs={1}>
                         <NavBar />
                     </Grid>
                     <Grid item className="grid-content" xs={1}>
-                        <h1>Add_data is here</h1>
+                        <h1>Error 404: Page Not Found</h1>
+                        <h3>Something went wrong...</h3>
                     </Grid>
                 </Grid>
             </div>
@@ -21,4 +22,4 @@ function Add_Data() {
     );
 }
 
-export default Add_Data;
+export default NoPage;
