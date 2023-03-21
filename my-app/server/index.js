@@ -32,15 +32,21 @@ app.get("/api/get", (req, res) => {
 
 app.post("/api/insert", (req, res) => {
     const formData = req.body.formData;
-    console.log(formData.colorWon);
-
-    const sqlInsert = "INSERT INTO chess_data (colorWon) VALUES (?);";
-    db.query(sqlInsert, [formData.colorWon], (err, result) => {
-        if (err) {
-            console.log("The value was: " + formData.colorWon);
-            console.error(err);
-        }
-    });
+    console.log("Formdata: " + formData);
+    const sqlInsert = "INSERT INTO chess_data (colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString, timestamp) VALUES (?, ?, ?, ?, ?, ?);";
+    db.query(sqlInsert, [
+        formData.colorWon,
+        formData.amountOfMovesPlayed,
+        formData.amountOfPiecesCaptured,
+        formData.chessOpening,
+        formData.pgnString,
+        formData.timestamp],
+        (err, result) => {
+            if (err) {
+                console.log("The value was: " + formData.colorWon);
+                console.error(err);
+            }
+        });
 });
 
 app.delete("/api/delete/:id", (req, res) => {
@@ -50,7 +56,6 @@ app.delete("/api/delete/:id", (req, res) => {
     db.query(sqlDelete, id, (err, result) => {
         if (err)
             console.error(err);
-
         console.log(result);
     });
 });
@@ -59,11 +64,19 @@ app.put("/api/update", (req, res) => {
     const id = req.body.id;
     const formData = req.body.formData;
 
-    const sqlUpdate = "UPDATE chess_data SET colorWon = (?) WHERE id = (?)";
-    db.query(sqlUpdate, [formData.colorWon, id], (err, result) => {
-        if (err)
-            console.error(err);
-    });
+    const sqlUpdate = "UPDATE chess_data SET colorWon = (?), amountOfMovesPlayed = (?), amountOfPiecesCaptured = (?), chessOpening = (?), pgnString = (?), timestamp = (?) WHERE id = (?)";
+    db.query(sqlUpdate, [
+        formData.colorWon,
+        formData.amountOfMovesPlayed,
+        formData.amountOfPiecesCaptured,
+        formData.chessOpening,
+        formData.pgnString,
+        formData.timestamp,
+        id],
+        (err, result) => {
+            if (err)
+                console.error(err);
+        });
 });
 
 app.listen(3001, () => {

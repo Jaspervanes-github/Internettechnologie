@@ -1,65 +1,127 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import NavBar from "../../components/NavBar";
-import { Grid } from "@material-ui/core";
-import Axios from 'axios';
+import { Button, Grid } from "@material-ui/core";
 
 import { createToastMessage } from "../../utils/toast";
+import FormComponent from "../../components/FormComponent";
+import { updateEntry, deleteEntry, insertEntry, getAllDataFromDB } from "../../utils/dbQueries";
 
 var formData = {
-    colorWon: "white",
-}
-
-/**
- * Handles the changes in the form element of the popups.
- * @param {*} event This variable contains all the data of the method call, for example where it gets called from.
- */
-function handleChange(event) {
-    const target = event.target;
-    const name = target.name;
-    let value = target.value;
-
-    setFormData({ ...formData, [name]: value });
+    colorWon: "tie",
+    amountOfMovesPlayed: 0,
+    amountOfPiecesCaptured: 0,
+    chessOpening: "ruy_lopez",
+    pgnString: "-",
+    timestamp: new Intl.DateTimeFormat('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).format(Date.now()),
 }
 
 /**
  * Handles the submittions of the form element of the popups.
  * @param {*} event This variable contains all the data of the method call, for example where it gets called from.
  */
-async function handleSubmit(event) {
+async function handleSubmit(event, setDbData, colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString) {
     createToastMessage("The form is being submitted, please wait...", 3000);
 
-    Axios.post("http://localhost:3001/api/insert", { formData: formData }).then((res) => {
-        console.log("We did it!: " + res);
-        alert("Succesfull insert!");
-    });
+    if (colorWon == null || amountOfMovesPlayed == null || amountOfPiecesCaptured == null || chessOpening == null || pgnString == null) {
+        createToastMessage("Make sure all the fields are filled in before submitting the form", 3000);
+        return;
+    }
+    //Updates the timestamp
+    setFormData(colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString);
 
+    insertEntry(formData);
+    getAllDataFromDB(setDbData);
     event.preventDefault();
 }
 
-function setFormData(newFormData) {
-    formData = newFormData;
+function setFormData(colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString) {
+    formData = {
+        colorWon: colorWon,
+        amountOfMovesPlayed: amountOfMovesPlayed,
+        amountOfPiecesCaptured: amountOfPiecesCaptured,
+        chessOpening: chessOpening,
+        pgnString: pgnString,
+        timestamp: new Intl.DateTimeFormat('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }).format(Date.now()),
+    };
 }
 
-function deleteRow(id) {
-    Axios.delete(`http://localhost:3001/api/delete/${id}`);
+function onClickNewForm(setEntryIndex) {
+    setEntryIndex(-1);
 }
 
-function updateRow(id, formData) {
-    Axios.put("http://localhost:3001/api/update", {
-        formData: formData,
-        id: id,
-    });
+function onClickUpdateEntry(id, dbData, setDbData, colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString) {
+    console.log("Before Update: " + dbData);
+    if (dbData.some(data => data.id == id)) {
+        setFormData(colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString);
+        updateEntry(id, formData);
+        let temp = [...dbData];
+        temp[temp.findIndex(data => data.id == id)] = { ...formData, id: temp[temp.findIndex(data => data.id == id)].id };
+        setDbData(temp);
+        console.log("After Update: " + temp);
+    }
+}
+
+function onClickDeleteEntry(id, dbData, setDbData) {
+    if (dbData.some(data => data.id == id)) {
+        deleteEntry(id);
+        let temp = [...dbData];
+        temp = temp.filter(data => data.id != id);
+        setDbData(temp);
+    }
 }
 
 function AddData() {
+    const [dbData, setDbData] = useState([]);
+    const [entryIndex, setEntryIndex] = useState();
+
+    const [colorWon, setColorWon] = useState();
+    const [amountOfMovesPlayed, setAmountOfMovesPlayed] = useState();
+    const [amountOfPiecesCaptured, setAmountOfPiecesCaptured] = useState();
+    const [chessOpening, setChessOpening] = useState();
+    const [pgnString, setPgnString] = useState();
+
     useEffect(() => {
-        Axios.get("http://localhost:3001/api/get").then((response) => {
-            console.log(response);
-        });
+        getAllDataFromDB(setDbData);
     }, []);
 
-    const [deleteRowIndex, setDeleteRowIndex] = useState(-1);
+    useEffect(() => {
+        console.log("In useEffect: " + entryIndex);
+        let data = dbData[dbData.findIndex(data => data.id == entryIndex)];
+
+        if (data != null) {
+            //Updates all the components when a new entryIndex is selected
+            setColorWon(data.colorWon);
+            setAmountOfMovesPlayed(data.amountOfMovesPlayed);
+            setAmountOfPiecesCaptured(data.amountOfPiecesCaptured);
+            setChessOpening(data.chessOpening);
+            setPgnString(data.pgnString);
+        } else {
+            console.log("Before: " + colorWon);
+            setColorWon(null);
+            console.log("After: " + colorWon);
+            setAmountOfMovesPlayed(null);
+            setAmountOfPiecesCaptured(null);
+            setChessOpening(null);
+            setPgnString(null);
+        }
+    }, [entryIndex]);
+
+    if (!dbData) return <div>Loading...</div>;
 
     return (
         <React.Fragment>
@@ -73,30 +135,110 @@ function AddData() {
                         <div className="formContent">
                             <form
                                 onSubmit={(event) => {
-                                    //TODO: Check if all the data inputted is valid data
                                     handleSubmit(
                                         event,
+                                        setDbData,
+                                        colorWon,
+                                        amountOfMovesPlayed,
+                                        amountOfPiecesCaptured,
+                                        chessOpening,
+                                        pgnString
                                     );
                                 }}>
 
-                                <select
-                                    type="select"
-                                    name="colorWon"
-                                    value={formData.colorWon}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                    }}
-                                >
-                                    <option value="white">WHITE</option>
-                                    <option value="black">BLACK</option>
-                                    <option value="tie">TIE</option>
-                                </select>
+                                <Button variant="contained" onClick={() => {
+                                    onClickNewForm(setEntryIndex);
+                                    setEntryIndex(-1);
+                                }}>New Form</Button>
+                                <Button variant="contained" onClick={() => {
+                                    onClickUpdateEntry(
+                                        entryIndex,
+                                        dbData,
+                                        setDbData,
+                                        colorWon,
+                                        amountOfMovesPlayed,
+                                        amountOfPiecesCaptured,
+                                        chessOpening,
+                                        pgnString);
+                                        setEntryIndex(-1);
+                                }}>Update Entry</Button>
+                                <Button variant="contained" onClick={() => {
+                                    onClickDeleteEntry(entryIndex, dbData, setDbData);
+                                    setEntryIndex(-1);
+                                }}>Delete Entry</Button>
+                                <FormComponent label="ID: ">
+                                    <select
+                                        id="entryIndex"
+                                        type="select"
+                                        name="entryIndex"
+                                        value={entryIndex}
+                                        onChange={(event) => { setEntryIndex(event.target.value) }}
+                                    >
+                                        <option selected value={-1}> -- None -- </option>
+                                        {dbData.map(entry =>
+                                            <option key={entry.id} value={entry.id}>{entry.id}</option>
+                                        )};
+                                    </select>
+                                </FormComponent>
+
+                                <FormComponent label="Color Won: ">
+                                    <select
+                                        type="select"
+                                        name="colorWon"
+                                        value={colorWon}
+                                        onChange={(event) => {
+                                            setColorWon(event.target.value);
+                                        }}
+                                    >
+                                        <option hidden disabled selected value> -- Select an option -- </option>
+                                        <option value="white">WHITE</option>
+                                        <option value="black">BLACK</option>
+                                        <option value="tie">TIE</option>
+                                    </select>
+                                </FormComponent>
+                                <FormComponent label="Amount of Moves Played: ">
+                                    <input name="amountOfMovesPlayed" type="text" pattern="[0-9]*" value={amountOfMovesPlayed} onChange={(event) => {
+                                        setAmountOfMovesPlayed(event.target.value);
+                                    }} />
+                                </FormComponent>
+                                <FormComponent label="Amount of Pieces Captured: ">
+                                    <input name="amountOfPiecesCaptured" type="text" pattern="[0-9]*" value={amountOfPiecesCaptured} onChange={(event) => {
+                                        setAmountOfPiecesCaptured(event.target.value);
+                                    }} />
+                                </FormComponent>
+
+                                <FormComponent label="Chess Opening: ">
+                                    <select
+                                        type="select"
+                                        name="chessOpening"
+                                        value={chessOpening}
+                                        onChange={(event) => {
+                                            setChessOpening(event.target.value);
+                                        }}
+                                    >
+                                        <option hidden disabled selected value> -- Select an option -- </option>
+                                        <option value="ruy_lopez">Ruy Lopez</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="nimzovich_larsen">Nimzovich-Larsen</option>
+                                        <option value="french_defense">French Defence</option>
+                                        <option value="queens_gambit">Queens Gambit</option>
+                                        <option value="kings_gambit">Kings Gambit</option>
+                                        <option value="english">English</option>
+                                        <option value="london">London</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="kings_indian">Kings Indian Defence</option>
+                                    </select>
+                                </FormComponent>
+
+                                <FormComponent label="PGN String: ">
+                                    <textarea name="pgnString" placeholder="Please paste the PGN string here..." value={pgnString} onChange={(event) => {
+                                        setPgnString(event.target.value);
+                                    }}></textarea>
+                                </FormComponent>
 
                                 <input className="submit-button" type="submit" value="Submit Form" />
                             </form>
                         </div>
-                        <input className="update-button" type="text" pattern="[0-9]*" onChange={(event) => { setDeleteRowIndex(event.target.value) }} />
-                        <button onClick={() => { deleteRow(deleteRowIndex) }}>Delete</button>
                     </Grid>
                 </Grid>
             </div>
