@@ -27,7 +27,7 @@ var formData = {
  * Handles the submittions of the form element of the popups.
  * @param {*} event This variable contains all the data of the method call, for example where it gets called from.
  */
-async function handleSubmit(event, setDbData, colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString) {
+async function handleSubmit(event, dbData, setDbData, colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString) {
     createToastMessage("The form is being submitted, please wait...", 3000);
 
     if (colorWon == "null" || amountOfMovesPlayed == 0 || amountOfPiecesCaptured == 0 || chessOpening == "null" || pgnString == "") {
@@ -39,6 +39,12 @@ async function handleSubmit(event, setDbData, colorWon, amountOfMovesPlayed, amo
 
     insertEntry(formData);
     getAllDataFromDB(setDbData);
+
+    let selectElement = document.getElementById("entryIndex");
+    let option = document.createElement("option");
+    option.text = dbData[dbData.length].id;
+    selectElement.add(option, selectElement.options.length);
+
     event.preventDefault();
 }
 
@@ -135,6 +141,7 @@ function AddData() {
                                 onSubmit={(event) => {
                                     handleSubmit(
                                         event,
+                                        dbData,
                                         setDbData,
                                         colorWon,
                                         amountOfMovesPlayed,
