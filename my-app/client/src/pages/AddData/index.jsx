@@ -30,7 +30,7 @@ var formData = {
 async function handleSubmit(event, setDbData, colorWon, amountOfMovesPlayed, amountOfPiecesCaptured, chessOpening, pgnString) {
     createToastMessage("The form is being submitted, please wait...", 3000);
 
-    if (colorWon == null || amountOfMovesPlayed == null || amountOfPiecesCaptured == null || chessOpening == null || pgnString == null) {
+    if (colorWon == "null" || amountOfMovesPlayed == 0 || amountOfPiecesCaptured == 0 || chessOpening == "null" || pgnString == "") {
         createToastMessage("Make sure all the fields are filled in before submitting the form", 3000);
         return;
     }
@@ -89,11 +89,11 @@ function AddData() {
     const [dbData, setDbData] = useState([]);
     const [entryIndex, setEntryIndex] = useState();
 
-    const [colorWon, setColorWon] = useState();
-    const [amountOfMovesPlayed, setAmountOfMovesPlayed] = useState();
-    const [amountOfPiecesCaptured, setAmountOfPiecesCaptured] = useState();
-    const [chessOpening, setChessOpening] = useState();
-    const [pgnString, setPgnString] = useState();
+    const [colorWon, setColorWon] = useState("null");
+    const [amountOfMovesPlayed, setAmountOfMovesPlayed] = useState(0);
+    const [amountOfPiecesCaptured, setAmountOfPiecesCaptured] = useState(0);
+    const [chessOpening, setChessOpening] = useState("null");
+    const [pgnString, setPgnString] = useState("");
 
     useEffect(() => {
         getAllDataFromDB(setDbData);
@@ -111,13 +111,11 @@ function AddData() {
             setChessOpening(data.chessOpening);
             setPgnString(data.pgnString);
         } else {
-            console.log("Before: " + colorWon);
-            setColorWon(null);
-            console.log("After: " + colorWon);
-            setAmountOfMovesPlayed(null);
-            setAmountOfPiecesCaptured(null);
-            setChessOpening(null);
-            setPgnString(null);
+            setColorWon("null");
+            setAmountOfMovesPlayed(0);
+            setAmountOfPiecesCaptured(0);
+            setChessOpening("null");
+            setPgnString("");
         }
     }, [entryIndex]);
 
@@ -160,12 +158,13 @@ function AddData() {
                                         amountOfPiecesCaptured,
                                         chessOpening,
                                         pgnString);
-                                        setEntryIndex(-1);
+                                    setEntryIndex(-1);
                                 }}>Update Entry</Button>
                                 <Button variant="contained" onClick={() => {
                                     onClickDeleteEntry(entryIndex, dbData, setDbData);
                                     setEntryIndex(-1);
                                 }}>Delete Entry</Button>
+
                                 <FormComponent label="ID: ">
                                     <select
                                         id="entryIndex"
@@ -180,7 +179,6 @@ function AddData() {
                                         )};
                                     </select>
                                 </FormComponent>
-
                                 <FormComponent label="Color Won: ">
                                     <select
                                         type="select"
@@ -190,23 +188,22 @@ function AddData() {
                                             setColorWon(event.target.value);
                                         }}
                                     >
-                                        <option hidden disabled selected value> -- Select an option -- </option>
+                                        <option hidden disabled selected value="null"> -- Select an option -- </option>
                                         <option value="white">WHITE</option>
                                         <option value="black">BLACK</option>
                                         <option value="tie">TIE</option>
                                     </select>
                                 </FormComponent>
                                 <FormComponent label="Amount of Moves Played: ">
-                                    <input name="amountOfMovesPlayed" type="text" pattern="[0-9]*" value={amountOfMovesPlayed} onChange={(event) => {
+                                    <input name="amountOfMovesPlayed" type="text" pattern="[0-9]*" value={amountOfMovesPlayed} placeholder="Enter number here" onChange={(event) => {
                                         setAmountOfMovesPlayed(event.target.value);
                                     }} />
                                 </FormComponent>
                                 <FormComponent label="Amount of Pieces Captured: ">
-                                    <input name="amountOfPiecesCaptured" type="text" pattern="[0-9]*" value={amountOfPiecesCaptured} onChange={(event) => {
+                                    <input name="amountOfPiecesCaptured" type="text" pattern="[0-9]*" value={amountOfPiecesCaptured} placeholder="Enter number here" onChange={(event) => {
                                         setAmountOfPiecesCaptured(event.target.value);
                                     }} />
                                 </FormComponent>
-
                                 <FormComponent label="Chess Opening: ">
                                     <select
                                         type="select"
@@ -216,7 +213,7 @@ function AddData() {
                                             setChessOpening(event.target.value);
                                         }}
                                     >
-                                        <option hidden disabled selected value> -- Select an option -- </option>
+                                        <option hidden disabled selected value="null"> -- Select an option -- </option>
                                         <option value="ruy_lopez">Ruy Lopez</option>
                                         <option value="polish">Polish</option>
                                         <option value="nimzovich_larsen">Nimzovich-Larsen</option>
@@ -229,7 +226,6 @@ function AddData() {
                                         <option value="kings_indian">Kings Indian Defence</option>
                                     </select>
                                 </FormComponent>
-
                                 <FormComponent label="PGN String: ">
                                     <textarea name="pgnString" placeholder="Please paste the PGN string here..." value={pgnString} onChange={(event) => {
                                         setPgnString(event.target.value);
