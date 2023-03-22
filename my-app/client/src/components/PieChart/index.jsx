@@ -6,8 +6,9 @@ function PieChart(props) {
     return (
         <React.Fragment>
             <div className="pieChart">
-            <label>{props.title}</label>
+            <label class="item1">{props.title}</label>
                         <Chart
+                        class="item2"
                             options={{
                                 labels: props.labels,
                                 colors: props.colors,

@@ -4,3 +4,7 @@
     padding: 5px;
     background-color: rgba(117, 117, 117, 0.5);
 }
+
+.dashboardCard label {
+    color: rgb(220, 220, 220);
+}

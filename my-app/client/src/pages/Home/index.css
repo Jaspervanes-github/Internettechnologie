@@ -9,8 +9,49 @@
     min-height: 100%;
     margin-top: 5%;
 }
+
+.Home .unityGame {
+    grid-area: game;
+    width: max-content;
+    height: max-content;
+    border-style: solid;
+    border-radius: 8px;
+    border-color: rgb(212, 212, 212);
+    padding: 10px;
+}
+
+.Home .unityButtons {
+    grid-area: buttons;
+}
+.Home .controls {
+    grid-area: controls;
+}
+
 .Home .grid-content {
     min-width: 80%;
     max-width: 80%;
     min-height: 100%;
+    display: grid;
+    grid-template-areas:
+        "game controls"
+        "buttons controls";
+    grid-gap: 8px;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.unity {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls .TextBox {
+    text-align: left;
+    padding: 20px;
+}
+
+.controls .TextBox {
+    width: 500px;
 }

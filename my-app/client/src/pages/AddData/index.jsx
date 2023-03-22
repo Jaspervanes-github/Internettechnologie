@@ -135,7 +135,6 @@ function AddData() {
                         <NavBar />
                     </Grid>
                     <Grid item className="grid-content" xs={1}>
-                        <h1>Add_data is here</h1>
                         <div className="formContent">
                             <form
                                 onSubmit={(event) => {

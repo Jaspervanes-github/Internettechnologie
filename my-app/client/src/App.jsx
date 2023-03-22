@@ -49,17 +49,22 @@ function App() {
           theme="dark"
         />
 
-        <Header />
-        
-        <BrowserRouter>
-          <Routes>
-            <Route exact path="/uitleg" element={<Uitleg />} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route exact path="/add_data" element={<AddData />} />
-            <Route exact path="/" element={<Home />} />
-            <Route path="*" element={<NoPage />} />
-          </Routes>
-        </BrowserRouter>
+        <div class="header">
+          <Header />
+        </div>
+        <div class="content">
+
+          <BrowserRouter>
+            <Routes>
+              <Route exact path="/uitleg" element={<Uitleg />} />
+              <Route exact path="/dashboard" element={<Dashboard />} />
+              <Route exact path="/add_data" element={<AddData />} />
+              <Route exact path="/" element={<Home />} />
+              <Route path="*" element={<NoPage />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+
       </div>
     </ThemeProvider>
   );

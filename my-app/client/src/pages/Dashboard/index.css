@@ -57,4 +57,7 @@
     grid-gap: 8px;
     background-color: rgba(56, 56, 56, 0.8);
     padding: 10px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: gray;
 }

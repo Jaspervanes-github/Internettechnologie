@@ -1,5 +1,5 @@
 import React from "react";
-import './index.css';
+import './index.css'
 
 /**
  * This component displays the title of the application together with its logo, usually displayed at the top of the page.
@@ -7,9 +7,12 @@ import './index.css';
  */
 function Header() {
   return (
-    <h1>
-      Mini-project Internettechnologie
-    </h1>
+    <div class="header-image">
+    </div>
+    
+    // <h1>
+    //   Mini-project Internettechnologie
+    // </h1>
   );
 }
 

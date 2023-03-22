@@ -1,0 +1,25 @@
+.pieChart {
+    display: grid;
+    grid-template-areas: 
+    "title"
+    "chart";
+    grid-gap: 8px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(117, 117, 117, 0.25);
+    height: 400px;
+}
+
+.pieChart .item1 {
+    grid-area: title;
+}
+
+.pieChart .item2 {
+    grid-area: chart;
+}
+
+.pieChart label {
+    font-weight: bold;
+    text-align: left;
+    font-size: large;
+}

@@ -1,5 +1,6 @@
 body {
-  background: url("./assets/images/background.png") no-repeat center center fixed;
+  background: linear-gradient(rgba(0, 0, 0, 0.7),
+  rgba(0, 0, 0, 0.7)), url("./assets/images/backgroundImage.jpg") center center fixed;
   background-size: 45%;
   background-color: black;
   color: white;

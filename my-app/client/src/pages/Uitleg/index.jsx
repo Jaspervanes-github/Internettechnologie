@@ -13,7 +13,6 @@ function Uitleg() {
                         <NavBar />
                     </Grid>
                     <Grid item className="grid-content" xs={1}>
-                        <h1>Uitleg</h1>
                         <TextBox head="Globale Uitleg">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt sem a tincidunt finibus.
                             Mauris iaculis sed sem vel interdum. Nullam ultricies sodales velit. Donec accumsan eleifend ultricies.
