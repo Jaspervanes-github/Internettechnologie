@@ -1,3 +1,7 @@
+.Dashboard {
+    display: flex;
+}
+
 .Dashboard .grid-container {
     max-width: 1500px;
     max-height: 1080px;
@@ -9,8 +13,48 @@
     min-height: 100%;
     margin-top: 5%;
 }
+
 .Dashboard .grid-content {
     min-width: 80%;
     max-width: 80%;
     min-height: 100%;
+    margin-left: auto;
+}
+
+.item1 {
+    grid-area: card1;
+}
+
+.item2 {
+    grid-area: card2;
+}
+
+.item3 {
+    grid-area: card3;
+}
+
+.item4 {
+    grid-area: card4;
+}
+
+.item5 {
+    grid-area: card5;
+}
+
+.item6 {
+    grid-area: chart1;
+}
+
+.item7 {
+    grid-area: chart2;
+}
+
+.container {
+    display: grid;
+    grid-template-areas:
+        "card1 card2 card3 card4 card5"
+        "chart1 chart1 . chart2 chart2";
+    grid-gap: 8px;
+    background-color: rgba(56, 56, 56, 0.8);
+    padding: 10px;
 }
