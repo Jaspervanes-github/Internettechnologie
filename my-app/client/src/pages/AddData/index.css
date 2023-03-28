@@ -1,6 +1,15 @@
+.AddData {
+    display: flex;
+}
+
 .AddData .grid-container {
     max-width: 1500px;
     max-height: 1080px;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    //background-color: yellow;
 }
 
 .AddData .grid-navbar {
@@ -8,9 +17,23 @@
     max-width: 20%;
     min-height: 100%;
     margin-top: 5%;
+    margin-left: 4%;
 }
 .AddData .grid-content {
     min-width: 80%;
     max-width: 80%;
     min-height: 100%;
+    margin-left: auto;
+    margin-top: 10%;
+    
+}
+
+.AddData .grid-content Button {
+    margin-right: 50px;
+    margin-bottom: 20px;
+}
+
+.AddData .grid-content .formComponents FormComponent {
+    margin-bottom: 10px;
+    background-color: red;
 }

@@ -170,75 +170,76 @@ function AddData() {
                                     onClickDeleteEntry(entryIndex, dbData, setDbData);
                                     setEntryIndex(-1);
                                 }}>Delete Entry</Button>
+                                <div class="formComponents">
+                                    <FormComponent label="ID: ">
+                                        <select
+                                            id="entryIndex"
+                                            type="select"
+                                            name="entryIndex"
+                                            value={entryIndex}
+                                            onChange={(event) => { setEntryIndex(event.target.value) }}
+                                        >
+                                            <option selected value={-1}> -- None -- </option>
+                                            {dbData.map(entry =>
+                                                <option key={entry.id} value={entry.id}>{entry.id}</option>
+                                            )};
+                                        </select>
+                                    </FormComponent>
+                                    <FormComponent label="Color Won: ">
+                                        <select
+                                            type="select"
+                                            name="colorWon"
+                                            value={colorWon}
+                                            onChange={(event) => {
+                                                setColorWon(event.target.value);
+                                            }}
+                                        >
+                                            <option hidden disabled selected value="null"> -- Select an option -- </option>
+                                            <option value="white">WHITE</option>
+                                            <option value="black">BLACK</option>
+                                            <option value="tie">TIE</option>
+                                        </select>
+                                    </FormComponent>
+                                    <FormComponent label="Amount of Moves Played: ">
+                                        <input name="amountOfMovesPlayed" type="text" pattern="[0-9]*" value={amountOfMovesPlayed} placeholder="Enter number here" onChange={(event) => {
+                                            setAmountOfMovesPlayed(event.target.value);
+                                        }} />
+                                    </FormComponent>
+                                    <FormComponent label="Amount of Pieces Captured: ">
+                                        <input name="amountOfPiecesCaptured" type="text" pattern="[0-9]*" value={amountOfPiecesCaptured} placeholder="Enter number here" onChange={(event) => {
+                                            setAmountOfPiecesCaptured(event.target.value);
+                                        }} />
+                                    </FormComponent>
+                                    <FormComponent label="Chess Opening: ">
+                                        <select
+                                            type="select"
+                                            name="chessOpening"
+                                            value={chessOpening}
+                                            onChange={(event) => {
+                                                setChessOpening(event.target.value);
+                                            }}
+                                        >
+                                            <option hidden disabled selected value="null"> -- Select an option -- </option>
+                                            <option value="ruy_lopez">Ruy Lopez</option>
+                                            <option value="polish">Polish</option>
+                                            <option value="nimzovich_larsen">Nimzovich-Larsen</option>
+                                            <option value="french_defense">French Defence</option>
+                                            <option value="queens_gambit">Queens Gambit</option>
+                                            <option value="kings_gambit">Kings Gambit</option>
+                                            <option value="english">English</option>
+                                            <option value="london">London</option>
+                                            <option value="catalan">Catalan</option>
+                                            <option value="kings_indian">Kings Indian Defence</option>
+                                        </select>
+                                    </FormComponent>
+                                    <FormComponent label="PGN String: ">
+                                        <textarea name="pgnString" placeholder="Please paste the PGN string here..." value={pgnString} onChange={(event) => {
+                                            setPgnString(event.target.value);
+                                        }}></textarea>
+                                    </FormComponent>
 
-                                <FormComponent label="ID: ">
-                                    <select
-                                        id="entryIndex"
-                                        type="select"
-                                        name="entryIndex"
-                                        value={entryIndex}
-                                        onChange={(event) => { setEntryIndex(event.target.value) }}
-                                    >
-                                        <option selected value={-1}> -- None -- </option>
-                                        {dbData.map(entry =>
-                                            <option key={entry.id} value={entry.id}>{entry.id}</option>
-                                        )};
-                                    </select>
-                                </FormComponent>
-                                <FormComponent label="Color Won: ">
-                                    <select
-                                        type="select"
-                                        name="colorWon"
-                                        value={colorWon}
-                                        onChange={(event) => {
-                                            setColorWon(event.target.value);
-                                        }}
-                                    >
-                                        <option hidden disabled selected value="null"> -- Select an option -- </option>
-                                        <option value="white">WHITE</option>
-                                        <option value="black">BLACK</option>
-                                        <option value="tie">TIE</option>
-                                    </select>
-                                </FormComponent>
-                                <FormComponent label="Amount of Moves Played: ">
-                                    <input name="amountOfMovesPlayed" type="text" pattern="[0-9]*" value={amountOfMovesPlayed} placeholder="Enter number here" onChange={(event) => {
-                                        setAmountOfMovesPlayed(event.target.value);
-                                    }} />
-                                </FormComponent>
-                                <FormComponent label="Amount of Pieces Captured: ">
-                                    <input name="amountOfPiecesCaptured" type="text" pattern="[0-9]*" value={amountOfPiecesCaptured} placeholder="Enter number here" onChange={(event) => {
-                                        setAmountOfPiecesCaptured(event.target.value);
-                                    }} />
-                                </FormComponent>
-                                <FormComponent label="Chess Opening: ">
-                                    <select
-                                        type="select"
-                                        name="chessOpening"
-                                        value={chessOpening}
-                                        onChange={(event) => {
-                                            setChessOpening(event.target.value);
-                                        }}
-                                    >
-                                        <option hidden disabled selected value="null"> -- Select an option -- </option>
-                                        <option value="ruy_lopez">Ruy Lopez</option>
-                                        <option value="polish">Polish</option>
-                                        <option value="nimzovich_larsen">Nimzovich-Larsen</option>
-                                        <option value="french_defense">French Defence</option>
-                                        <option value="queens_gambit">Queens Gambit</option>
-                                        <option value="kings_gambit">Kings Gambit</option>
-                                        <option value="english">English</option>
-                                        <option value="london">London</option>
-                                        <option value="catalan">Catalan</option>
-                                        <option value="kings_indian">Kings Indian Defence</option>
-                                    </select>
-                                </FormComponent>
-                                <FormComponent label="PGN String: ">
-                                    <textarea name="pgnString" placeholder="Please paste the PGN string here..." value={pgnString} onChange={(event) => {
-                                        setPgnString(event.target.value);
-                                    }}></textarea>
-                                </FormComponent>
-
-                                <input className="submit-button" type="submit" value="Submit Form" />
+                                    <input className="submit-button" type="submit" value="Submit Form" />
+                                </div>
                             </form>
                         </div>
                     </Grid>

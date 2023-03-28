@@ -20,7 +20,8 @@ function Home() {
                             <div class="unityGame">
                                 <UnityGame />
                             </div>
-                        </div><div class="controls">
+                        </div>
+                        <div class="controls">
                             <TextBox head="Controls">
                                 <TextBigSmall bigText="W: " smallText="Move Forward" />
                                 <TextBigSmall bigText="A: " smallText="Move Left" />
